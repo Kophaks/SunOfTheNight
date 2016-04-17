@@ -7,9 +7,22 @@ local width, height = GetScreenWidth(), GetScreenHeight();
 local pi = math.pi;
 local abs = math.abs;
 
+--util table to know when to use st,nd,rd or th
+local days = {
+	[1] = "st",
+	[2] = "nd",
+	[3] = "rd",
+	[21] = "st",
+	[22] = "nd",
+	[23] = "rd",
+	[31] = "st",
+};
+
 local pairs = pairs;
 local GetCursorPosition = GetCursorPosition;
 
+--table of options
+local options = {};
 
 local function createBackground()
 	sunNight.background = CreateFrame("FRAME", "SunOfTheNightBackground", WorldFrame);
@@ -25,6 +38,84 @@ local function createBackground()
 	
 	sunNight.background:SetAlpha(0);
 	sunNight.background:Hide();
+	
+	
+	--BottomPanel with info
+	sunNight.bottomPanel = {};
+	
+	--Background Panel
+	sunNight.bottomPanel.bottom = sunNight:CreateTexture();
+	sunNight.bottomPanel.bottom:SetTexture(0.02,0.02,0.02,0.6);
+	sunNight.bottomPanel.bottom:SetSize(GetScreenWidth(), 150);
+	sunNight.bottomPanel.bottom:SetPoint("BOTTOM", sunNight.background, 0, 0);
+	
+	--Thin upper line
+	sunNight.bottomPanel.bottomLine = sunNight:CreateTexture(nil, "OVERLAY");
+	sunNight.bottomPanel.bottomLine:SetTexture(0.4,0.4,0.4,0.9);
+	sunNight.bottomPanel.bottomLine:SetSize(GetScreenWidth(), 2);
+	sunNight.bottomPanel.bottomLine:SetPoint("BOTTOM", sunNight.background, 0, 145);
+	
+	--Experience bar
+	sunNight.bottomPanel.experienceBar = sunNight:CreateTexture(nil, "OVERLAY");
+	sunNight.bottomPanel.experienceBar:SetTexture("Interface\\AddOns\\SunOfTheNight\\smallBar.blp");
+	sunNight.bottomPanel.experienceBar:SetSize(512*0.7, 64*0.7);
+	sunNight.bottomPanel.experienceBar:SetPoint("BOTTOM", sunNight.background, 0, 95);
+	
+	--Experience fill bar
+	sunNight.bottomPanel.experienceBarFill = CreateFrame("StatusBar", "SunNightExperienceBar", sunNight);
+	sunNight.bottomPanel.experienceBarFill:SetStatusBarTexture("Interface\\AddOns\\SunOfTheNight\\smallTextureBar.blp");
+	sunNight.bottomPanel.experienceBarFill:SetSize(512*0.7, 64*0.7);
+	sunNight.bottomPanel.experienceBarFill:SetPoint("BOTTOM", sunNight.background, 1, 95);
+	sunNight.bottomPanel.experienceBarFill:SetStatusBarColor(0.65,0.65,1,1);
+	
+	--Level label
+	sunNight.bottomPanel.levelLabel = sunNight:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+	sunNight.bottomPanel.levelLabel:SetFont("Interface\\AddOns\\Rising\\Futura-Condensed-Normal.TTF", 16, "OUTLINE");
+	sunNight.bottomPanel.levelLabel:SetTextColor(0.6, 0.6, 0.6, 1);
+	sunNight.bottomPanel.levelLabel:SetText("LEVEL");
+	sunNight.bottomPanel.levelLabel:SetShadowColor(0, 0, 0, 0.5);
+	sunNight.bottomPanel.levelLabel:SetShadowOffset(2, -2);
+	sunNight.bottomPanel.levelLabel:SetPoint("BOTTOM", sunNight.background, -170, 109);
+	
+	--Level number
+	sunNight.bottomPanel.levelNumber = sunNight:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+	sunNight.bottomPanel.levelNumber:SetFont("Interface\\AddOns\\Rising\\Futura-Condensed-Normal.TTF", 28, "OUTLINE");
+	sunNight.bottomPanel.levelNumber:SetTextColor(1, 1, 1, 1);
+	sunNight.bottomPanel.levelNumber:SetText(UnitLevel("player"));
+	sunNight.bottomPanel.levelNumber:SetShadowColor(0, 0, 0, 0.5);
+	sunNight.bottomPanel.levelNumber:SetShadowOffset(2, -2);
+	sunNight.bottomPanel.levelNumber:SetPoint("BOTTOM", sunNight.background, -140, 103);
+	
+	--Date hour
+	sunNight.bottomPanel.time = sunNight:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+	sunNight.bottomPanel.time:SetFont("Interface\\AddOns\\Rising\\Futura-Condensed-Normal.TTF", 22, "OUTLINE");
+	sunNight.bottomPanel.time:SetTextColor(1, 1, 1, 1);
+	local day = days[date("%d")]
+	if(not days[date("%d")]) then
+		day = "th";
+	end
+	sunNight.bottomPanel.time:SetText(date("%A, %I:%M %p, %d"..day.." of %B, %Y"));
+	sunNight.bottomPanel.time:SetShadowColor(0, 0, 0, 0.5);
+	sunNight.bottomPanel.time:SetShadowOffset(2, -2);
+	sunNight.bottomPanel.time:SetPoint("BOTTOM", sunNight.background, 450, 105);
+	
+	
+end
+
+local function updateBottomPanel()
+	
+	--update XP
+	sunNight.bottomPanel.levelNumber:SetText(UnitLevel("player"));
+	local currentXP, nextLevelXP = UnitXP("player"), UnitXPMax("player");
+	sunNight.bottomPanel.experienceBarFill:SetMinMaxValues(0, nextLevelXP);
+	sunNight.bottomPanel.experienceBarFill:SetValue(currentXP);
+	
+	--update time
+	local day = days[date("%d")]
+	if(not days[date("%d")]) then
+		day = "th";
+	end
+	sunNight.bottomPanel.time:SetText(date("%A, %I:%M %p, %d"..day.." of %B, %Y"));
 	
 end
 
@@ -44,18 +135,19 @@ local function createSmokeEffect()
     	sunNight.smokeFX:SetSize(GetScreenWidth(), GetScreenHeight());
     	sunNight.smokeFX:SetAllPoints();
 	end
+	
 	sunNight.smokeFX.model:SetModel("Spells\\Dragonbreath_frost.m2");
 	sunNight.smokeFX.model:SetPortraitZoom(0);
     sunNight.smokeFX.model:SetCamDistanceScale(1);
     sunNight.smokeFX.model:SetPosition(5,2,-5);
     sunNight.smokeFX.model:SetRotation(0);
+    
 	sunNight.smokeFX:Show();
 	
 end
 
 
 local function removeAllLightFrame()
-	local options = { sunNight:GetChildren() };
 	for num, fontFrame in pairs(options) do
 		fontFrame.glow:SetAlpha(0);
 		fontFrame.font:SetTextColor(0.5, 0.5, 0.5, 1);
@@ -112,6 +204,8 @@ function toggleSunNight()
 		UIFrameFadeOut(UIParent, UIParent:GetAlpha(), UIParent:GetAlpha(), 0);
 		UIFrameFadeIn(sunNight, 1-sunNight:GetAlpha(), sunNight:GetAlpha(), 1);
 		UIFrameFadeIn(sunNight.background, 1-sunNight.background:GetAlpha(), sunNight.background:GetAlpha(), 0.3);
+		
+		updateBottomPanel();
 	end	
 end
 
@@ -141,7 +235,8 @@ local function createFontFrame(name, parent, framePoint, posX, posY, fontPoint, 
 	
 	fontFrame:SetScript("OnMouseUp", onClick);
 	
-
+	table.insert(options, fontFrame);
+	
 	return fontFrame;
 end
 
@@ -255,6 +350,8 @@ Addon:SetScript("OnEvent", function(self, event)
 	createBackground();
 	createSmokeEffect();
 	createOptions();
+	
+	Addon:UnregisterAllEvents();
 end);
 
 Addon:RegisterEvent("PLAYER_ENTERING_WORLD");
