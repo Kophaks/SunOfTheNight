@@ -64,8 +64,8 @@ local function createBackground()
 	--Experience fill bar
 	sunNight.bottomPanel.experienceBarFill = CreateFrame("StatusBar", "SunNightExperienceBar", sunNight);
 	sunNight.bottomPanel.experienceBarFill:SetStatusBarTexture("Interface\\AddOns\\SunOfTheNight\\smallTextureBar.blp");
-	sunNight.bottomPanel.experienceBarFill:SetSize(512*0.7, 64*0.7);
-	sunNight.bottomPanel.experienceBarFill:SetPoint("BOTTOM", sunNight.background, 1, 95);
+	sunNight.bottomPanel.experienceBarFill:SetSize(187, 14);
+	sunNight.bottomPanel.experienceBarFill:SetPoint("BOTTOM", sunNight.background, 1, 110);
 	sunNight.bottomPanel.experienceBarFill:SetStatusBarColor(0.65,0.65,1,1);
 	
 	--Level label
