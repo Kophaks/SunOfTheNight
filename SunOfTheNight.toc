@@ -1,8 +1,8 @@
-## Interface: 40300
+## Interface: 11200
 ## Title: SunOfTheNight
 ## Author: Lanrutcon
 ## Notes: SkyCharacterMenu
-## Version: 1.0
+## Version: 1.1
 
 SunOfTheNight.lua
 Bindings.xml

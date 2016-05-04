@@ -26,11 +26,11 @@ local options = {};
 
 local function createBackground()
 	sunNight.background = CreateFrame("FRAME", "SunOfTheNightBackground", WorldFrame);
-	sunNight.background:SetSize(GetScreenWidth(), GetScreenHeight());
+	SetSize(sunNight.background, GetScreenWidth(), GetScreenHeight());
 	sunNight.background:SetAllPoints(WorldFrame);
 	sunNight.background.texture = sunNight.background:CreateTexture();
 	sunNight.background.texture:SetAllPoints(sunNight.background);
-	sunNight.background.texture:SetTexture("Interface\\AddOns\\SunOfTheNight\\bg.blp");
+	sunNight.background.texture:SetTexture("Interface\\AddOns\\SunOfTheNight\\Textures\\bg.blp");
 	
 	sunNight.background:SetFrameStrata("DIALOG");
 	
@@ -46,31 +46,31 @@ local function createBackground()
 	--Background Panel
 	sunNight.bottomPanel.bottom = sunNight:CreateTexture();
 	sunNight.bottomPanel.bottom:SetTexture(0.02,0.02,0.02,0.6);
-	sunNight.bottomPanel.bottom:SetSize(GetScreenWidth(), 150);
+	SetSize(sunNight.bottomPanel.bottom, GetScreenWidth(), 150);
 	sunNight.bottomPanel.bottom:SetPoint("BOTTOM", sunNight.background, 0, 0);
 	
 	--Thin upper line
 	sunNight.bottomPanel.bottomLine = sunNight:CreateTexture(nil, "OVERLAY");
 	sunNight.bottomPanel.bottomLine:SetTexture(0.4,0.4,0.4,0.9);
-	sunNight.bottomPanel.bottomLine:SetSize(GetScreenWidth(), 2);
+	SetSize(sunNight.bottomPanel.bottomLine, GetScreenWidth(), 2);
 	sunNight.bottomPanel.bottomLine:SetPoint("BOTTOM", sunNight.background, 0, 145);
 	
 	--Experience bar
 	sunNight.bottomPanel.experienceBar = sunNight:CreateTexture(nil, "OVERLAY");
-	sunNight.bottomPanel.experienceBar:SetTexture("Interface\\AddOns\\SunOfTheNight\\smallBar.blp");
-	sunNight.bottomPanel.experienceBar:SetSize(512*0.7, 64*0.7);
+	sunNight.bottomPanel.experienceBar:SetTexture("Interface\\AddOns\\SunOfTheNight\\Textures\\smallBar.blp");
+	SetSize(sunNight.bottomPanel.experienceBar, 512*0.7, 64*0.7);
 	sunNight.bottomPanel.experienceBar:SetPoint("BOTTOM", sunNight.background, 0, 95);
 	
 	--Experience fill bar
 	sunNight.bottomPanel.experienceBarFill = CreateFrame("StatusBar", "SunNightExperienceBar", sunNight);
-	sunNight.bottomPanel.experienceBarFill:SetStatusBarTexture("Interface\\AddOns\\SunOfTheNight\\smallTextureBar.blp");
-	sunNight.bottomPanel.experienceBarFill:SetSize(187, 14);
+	sunNight.bottomPanel.experienceBarFill:SetStatusBarTexture("Interface\\AddOns\\SunOfTheNight\\Textures\\smallTextureBar.blp");
+	SetSize(sunNight.bottomPanel.experienceBarFill, 187, 14);
 	sunNight.bottomPanel.experienceBarFill:SetPoint("BOTTOM", sunNight.background, 1, 110);
 	sunNight.bottomPanel.experienceBarFill:SetStatusBarColor(0.65,0.65,1,1);
 	
 	--Level label
 	sunNight.bottomPanel.levelLabel = sunNight:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-	sunNight.bottomPanel.levelLabel:SetFont("Interface\\AddOns\\Rising\\Futura-Condensed-Normal.TTF", 16, "OUTLINE");
+	sunNight.bottomPanel.levelLabel:SetFont("Interface\\AddOns\\SunOfTheNight\\Futura-Condensed-Normal.TTF", 16, "OUTLINE");
 	sunNight.bottomPanel.levelLabel:SetTextColor(0.6, 0.6, 0.6, 1);
 	sunNight.bottomPanel.levelLabel:SetText("LEVEL");
 	sunNight.bottomPanel.levelLabel:SetShadowColor(0, 0, 0, 0.5);
@@ -79,7 +79,7 @@ local function createBackground()
 	
 	--Level number
 	sunNight.bottomPanel.levelNumber = sunNight:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-	sunNight.bottomPanel.levelNumber:SetFont("Interface\\AddOns\\Rising\\Futura-Condensed-Normal.TTF", 28, "OUTLINE");
+	sunNight.bottomPanel.levelNumber:SetFont("Interface\\AddOns\\SunOfTheNight\\Futura-Condensed-Normal.TTF", 28, "OUTLINE");
 	sunNight.bottomPanel.levelNumber:SetTextColor(1, 1, 1, 1);
 	sunNight.bottomPanel.levelNumber:SetText(UnitLevel("player"));
 	sunNight.bottomPanel.levelNumber:SetShadowColor(0, 0, 0, 0.5);
@@ -88,7 +88,7 @@ local function createBackground()
 	
 	--Date hour
 	sunNight.bottomPanel.time = sunNight:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-	sunNight.bottomPanel.time:SetFont("Interface\\AddOns\\Rising\\Futura-Condensed-Normal.TTF", 22, "OUTLINE");
+	sunNight.bottomPanel.time:SetFont("Interface\\AddOns\\SunOfTheNight\\Futura-Condensed-Normal.TTF", 22, "OUTLINE");
 	sunNight.bottomPanel.time:SetTextColor(1, 1, 1, 1);
 	local day = days[date("%d")]
 	if(not days[date("%d")]) then
@@ -126,21 +126,21 @@ local function createSmokeEffect()
     	sunNight.smokeFX = CreateFrame("FRAME", "SunOfTheNightSmokeFXFrame", sunNight.background);
     	sunNight.smokeFX.model = CreateFrame("PlayerModel", "SunOfTheNightSmokeFXFrameModel", sunNight.smokeFX);
     	
-    	sunNight.smokeFX.model:SetSize(GetScreenWidth(), GetScreenHeight());
+    	SetSize(sunNight.smokeFX.model, GetScreenWidth(), GetScreenHeight());
         sunNight.smokeFX.model:SetAllPoints(sunNight.smokeFX);
     
         sunNight.smokeFX.model:ClearModel();
     	
     	sunNight.smokeFX:SetFrameStrata("DIALOG");
-    	sunNight.smokeFX:SetSize(GetScreenWidth(), GetScreenHeight());
+    	SetSize(sunNight.smokeFX, GetScreenWidth(), GetScreenHeight());
     	sunNight.smokeFX:SetAllPoints();
 	end
 	
-	sunNight.smokeFX.model:SetModel("Spells\\Dragonbreath_frost.m2");
-	sunNight.smokeFX.model:SetPortraitZoom(0);
-    sunNight.smokeFX.model:SetCamDistanceScale(1);
-    sunNight.smokeFX.model:SetPosition(5,2,-5);
-    sunNight.smokeFX.model:SetRotation(0);
+	sunNight.smokeFX.model:SetModel("World\\Environment\\doodad\\generaldoodads\\elementalrifts\\firerift.m2");
+	--sunNight.smokeFX.model:SetPortraitZoom(0);
+    --sunNight.smokeFX.model:SetCamDistanceScale(1);
+    sunNight.smokeFX.model:SetPosition(-9,0,-6.1);
+    --sunNight.smokeFX.model:SetRotation(0);
     
 	sunNight.smokeFX:Show();
 	
@@ -166,17 +166,20 @@ local function optionInsideAngle(angle)
 	if (abs(angle) > 5/6*pi) then
 		 SpellbookMicroButton:Click();
 	elseif (angle > 2/3*pi) then
-		LFDMicroButton:Click();
+		ToggleCharacter("PaperDollFrame");
+		CharacterFrameTab3:Click();
 	elseif (angle > pi/3) then
 		TalentMicroButton:Click();
 	elseif (angle > pi/6) then
-		TogglePVPFrame();
+		ToggleCharacter("PaperDollFrame");
+		CharacterFrameTab5:Click();
 	elseif (abs(angle) < pi/6) then
 		ToggleCharacter("PaperDollFrame");
 	elseif (angle < -2/3*pi) then
-		GuildMicroButton:Click();
+		SocialsMicroButton:Click();
+		FriendsFrameTab3:Click();
 	elseif (angle < -pi/3) then
-		MiniMapWorldMapButton:Click();
+		WorldMapMicroButton:Click();
 	else
 		QuestLogMicroButton:Click();
 	end
@@ -189,13 +192,15 @@ function toggleSunNight()
 		UIFrameFadeOut(sunNight, sunNight:GetAlpha(), sunNight:GetAlpha(), 0);
 		UIFrameFadeOut(sunNight.background, sunNight.background:GetAlpha(), sunNight.background:GetAlpha(), 0);
 		sunNight:SetScript("OnUpdate", function(self, elapsed)
-			if (self:GetAlpha() == 0) then
-				self:SetScript("OnUpdate", nil);
-				self.background:Hide();
-				self:Hide();
+			if (sunNight:GetAlpha() == 0) then
+				sunNight:SetScript("OnUpdate", nil);
+				sunNight.background:Hide();
+				sunNight:Hide();
 			end
 		end);
 		UIParent:SetAlpha(1);
+		
+		BuffFrame:Show();
 	else
 		sunNight:EnableMouse(true);
 		sunNight:Show();
@@ -206,33 +211,35 @@ function toggleSunNight()
 		UIFrameFadeIn(sunNight.background, 1-sunNight.background:GetAlpha(), sunNight.background:GetAlpha(), 0.3);
 		
 		updateBottomPanel();
+		
+		BuffFrame:Hide();
 	end	
 end
 
 local function createFontFrame(name, parent, framePoint, posX, posY, fontPoint, onClick, direction, glowX, glowY, rotation)
 	local fontFrame = CreateFrame("FRAME", "SunOfTheNight" .. name, parent);
-	fontFrame:SetSize(128,32);
+	SetSize(fontFrame, 128,32);
 	fontFrame:SetPoint(framePoint, posX, posY);
 
 	
 	fontFrame.glow = fontFrame:CreateTexture("SunOfTheNight" .. name .. "Glow");
 	fontFrame.glow:SetPoint(framePoint, sunNight, glowX, glowY);
-	fontFrame.glow:SetTexture("Interface\\AddOns\\SunOfTheNight\\" .. direction .. "Glow.blp");
+	fontFrame.glow:SetTexture("Interface\\AddOns\\SunOfTheNight\\Textures\\" .. direction .. "Glow.blp");
 	fontFrame.glow:SetBlendMode("ADD");
 	fontFrame.glow:SetVertexColor(1, 1, 1, 0.7);
-	fontFrame.glow:SetRotation(rotation);
+	SetRotation(fontFrame.glow, rotation);
 	fontFrame.glow:SetAlpha(0);
 	
 	
 	fontFrame.font = fontFrame:CreateFontString("SunOfTheNight" .. name .. "Font", "OVERLAY", "GameFontNormal");
-	fontFrame.font:SetFont("Interface\\AddOns\\Rising\\Futura-Condensed-Normal.TTF", 30, "OUTLINE");
+	fontFrame.font:SetFont("Interface\\AddOns\\SunOfTheNight\\Futura-Condensed-Normal.TTF", 30, "OUTLINE");
 	fontFrame.font:SetTextColor(0.6, 0.6, 0.6, 1);
 	fontFrame.font:SetText(name);
 	fontFrame.font:SetShadowColor(0, 0, 0, 0.5);
 	fontFrame.font:SetShadowOffset(2, -2);
 	fontFrame.font:SetPoint(fontPoint, 0, 0);
 	
-	
+	fontFrame:EnableMouse(true);
 	fontFrame:SetScript("OnMouseUp", onClick);
 	
 	table.insert(options, fontFrame);
@@ -243,15 +250,15 @@ end
 
 local function createOptions()
 
-	sunNight.map = 			createFontFrame("Map", 				sunNight, "BOTTOM", 0, -25, "BOTTOM", 	function() toggleSunNight(); MiniMapWorldMapButton:Click(); end, "vertical", 0, -25, 0);
+	sunNight.map = 			createFontFrame("Map", 				sunNight, "BOTTOM", 0, -25, "BOTTOM", 	function() toggleSunNight(); WorldMapMicroButton:Click(); end, "vertical", 0, -25, 0);
 	sunNight.charInfo = 	createFontFrame("Character Info", 	sunNight, "RIGHT", 125,	 2, "RIGHT", 	function() toggleSunNight(); ToggleCharacter("PaperDollFrame"); end, "horizontal", 50, 1, 0);
-	sunNight.talents = 		createFontFrame("Talents", 			sunNight, "TOP", 	0, 	25, "TOP", 		function() toggleSunNight(); TalentMicroButton:Click(); end, "vertical", 0, 25, pi);
-	sunNight.spellbook = 	createFontFrame("Spellbook", 		sunNight, "LEFT", -80, 	 2, "LEFT", 	function() toggleSunNight(); SpellbookMicroButton:Click(); end, "horizontal", -50, 1, pi);
+	sunNight.talents = 		createFontFrame("Talents", 			sunNight, "TOP", 	0, 	25, "TOP", 		function() toggleSunNight(); TalentMicroButton:Click(); end, "vertical", 0, 25, 180);
+	sunNight.spellbook = 	createFontFrame("Spellbook", 		sunNight, "LEFT", -80, 	 2, "LEFT", 	function() toggleSunNight(); SpellbookMicroButton:Click(); end, "horizontal", -50, 1, 180);
 
-	sunNight.questLog = 	createFontFrame("Quest Log", 		sunNight, "BOTTOMRIGHT", -50, 10, "CENTER", function() toggleSunNight(); QuestLogMicroButton:Click(); end, "diagonal", -165, 37, -pi/2);
-	sunNight.guild = 		createFontFrame("Guild",	 		sunNight, "BOTTOMLEFT", 75, 10, "CENTER", 	function() toggleSunNight(); GuildMicroButton:Click(); end, "diagonal", 165, 37, pi);
-	sunNight.pvp = 			createFontFrame("PvP", 				sunNight, "TOPRIGHT", -75, -10, "CENTER", 	function() toggleSunNight(); TogglePVPFrame(); end, "diagonal", -165, -37, 0);
-	sunNight.dungeon = 		createFontFrame("Dungeon Finder", 	sunNight, "TOPLEFT", 25, -10, "CENTER", 	function() toggleSunNight(); LFDMicroButton:Click(); end, "diagonal", 165, -37, pi/2);
+	sunNight.questLog = 	createFontFrame("Quest Log", 		sunNight, "BOTTOMRIGHT", -50, 10, "CENTER", function() toggleSunNight(); QuestLogMicroButton:Click(); end, "diagonal", -165, 37, -90);
+	sunNight.guild = 		createFontFrame("Guild",	 		sunNight, "BOTTOMLEFT", 75, 10, "CENTER", 	function() toggleSunNight(); SocialsMicroButton:Click(); FriendsFrameTab3:Click(); end, "diagonal", 165, 37, 180);
+	sunNight.pvp = 			createFontFrame("PvP", 				sunNight, "TOPRIGHT", -75, -10, "CENTER", 	function() toggleSunNight(); ToggleCharacter("PaperDollFrame"); CharacterFrameTab5:Click(); end, "diagonal", -165, -37, 0);
+	sunNight.reputation = 		createFontFrame("Reputation", 	sunNight, "TOPLEFT", 25, -10, "CENTER", 	function() toggleSunNight(); ToggleCharacter("PaperDollFrame"); CharacterFrameTab3:Click(); end, "diagonal", 165, -37, 90);
 
 end
 
@@ -259,7 +266,7 @@ end
 local function initSunOfTheNight()
 
 	sunNight = CreateFrame("FRAME", "SunOfTheNight");
-	sunNight:SetSize(512, 256);
+	SetSize(sunNight, 512, 256);
 	sunNight:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
 	
 	sunNight:SetFrameStrata("DIALOG");
@@ -268,18 +275,22 @@ local function initSunOfTheNight()
 	sunNight:SetAlpha(0);
 
 	sunNight.starTexture = sunNight:CreateTexture("SunOfTheNightStarTexture");
-	sunNight.starTexture:SetAllPoints(sunNight);
-	sunNight.starTexture:SetTexture("Interface\\AddOns\\SunOfTheNight\\star.blp");
+	sunNight.starTexture:SetPoint("CENTER", sunNight);
+	SetSize(sunNight.starTexture, 512, 256);
+	sunNight.starTexture:SetTexture("Interface\\AddOns\\SunOfTheNight\\Textures\\star.blp");
 	sunNight.starTexture:SetBlendMode("BLEND");
 	sunNight.starTexture:SetVertexColor(1, 1, 1, 0.7);
 	
 	
-
+	local oldTime, newTime = GetTime();
 	sunNight:SetScript("OnShow", function(self)
 		local total = 0;
-		self:SetScript("OnUpdate", function(self, elapsed)
+		sunNight:SetScript("OnUpdate", function(self, elapsed)
+			newTime = GetTime();
+			elapsed = newTime - oldTime;
+			oldTime = newTime;
 			total = total + elapsed;
-			if total > 0.05 then
+			if total > 0.01 then
 				total = 0;
 				local mouseX, mouseY = GetCursorPosition();
 				local x,y = mouseX-width/2, mouseY-height/2;
@@ -300,7 +311,7 @@ local function initSunOfTheNight()
 					if angle < 2/3*pi then
 						highlightFrame(sunNight.talents);
 					elseif angle < 5/6*pi then
-						highlightFrame(sunNight.dungeon);
+						highlightFrame(sunNight.reputation);
 					else --if angle < pi then
 						highlightFrame(sunNight.spellbook);
 					end				
@@ -327,22 +338,17 @@ local function initSunOfTheNight()
 		end);
 	end);
 	sunNight:SetScript("OnHide", function(self)
-		self:SetScript("OnUpdate", nil);
+		sunNight:SetScript("OnUpdate", nil);
 	end);
 	
 	sunNight:SetScript("OnMouseUp", function(self, button)
-		if (button == "LeftButton") then
-			local x, y = GetCursorPosition();
-			optionInsideAngle(arctan2(y-height/2, x-width/2));
-		end
+		local x, y = GetCursorPosition();
+		optionInsideAngle(arctan2(y-height/2, x-width/2));
 	end);
 
 	sunNight:Hide();
 	
 end
-
-
-
 
 
 Addon:SetScript("OnEvent", function(self, event)
@@ -361,3 +367,30 @@ Addon:RegisterEvent("PLAYER_ENTERING_WORLD");
 -- Binding Variables
 BINDING_HEADER_HEADER = "Sun Of The Night";
 BINDING_NAME_ENTRY = "Toggle Menu";
+
+
+
+
+----------------------------
+--Vanilla Missing Functions
+----------------------------
+
+function SetSize(frame, width, height)
+	frame:SetHeight(height);
+	frame:SetWidth(width);
+end
+
+local s2 = sqrt(2);
+local cos, sin, rad = math.cos, math.sin, math.rad;
+local function CalculateCorner(angle)
+	local r = rad(angle);
+	return 0.5 + cos(r) / s2, 0.5 + sin(r) / s2;
+end
+function SetRotation(texture, angle)
+	local LRx, LRy = CalculateCorner(angle + 45);
+	local LLx, LLy = CalculateCorner(angle + 135);
+	local ULx, ULy = CalculateCorner(angle + 225);
+	local URx, URy = CalculateCorner(angle - 45);
+	
+	texture:SetTexCoord(ULx, ULy, LLx, LLy, URx, URy, LRx, LRy);
+end
